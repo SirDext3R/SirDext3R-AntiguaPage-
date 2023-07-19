@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-19T13:06:52-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>Mr.Robot CTF</title><link href="http://localhost:4000/CTF-Mr.Robot/" rel="alternate" type="text/html" title="Mr.Robot CTF" /><published>2023-06-15T00:00:00-05:00</published><updated>2023-06-15T00:00:00-05:00</updated><id>http://localhost:4000/CTF-Mr.Robot</id><content type="html" xml:base="http://localhost:4000/CTF-Mr.Robot/">&lt;h2 class=&quot;lead&quot; id=&quot;comentario&quot;&gt;Comentario:&lt;/h2&gt;
+&lt;p&gt;Esta fue de las primeras maquinas que hice, inspirada en la serie &lt;strong&gt;“Mr.Robot”&lt;/strong&gt;. Tiene una forma muy entretenida de resolver, comenzamos:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr.Robot1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Lista de lo que se vera en esta machine:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Reconocimiento de puertos&lt;/li&gt;
+  &lt;li&gt;Explotacion&lt;/li&gt;
+  &lt;li&gt;Escalada de privilegios usando SUDOERS&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; 65535 &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &amp;lt;IP-De la maquina&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;O si quieres ir a lo loco:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &amp;lt;IP- De la Maquina&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;El caso, veremos puertos interesantes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;22 - SSH&lt;/li&gt;
+  &lt;li&gt;80 - Http&lt;/li&gt;
+  &lt;li&gt;443 - Https&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Para optimizar el proceso de enumeracion de directorios, tiraremos de un &lt;strong&gt;Script&lt;/strong&gt;, propio de la herramienta nmap.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'http-enum'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; &amp;lt;IP De la Maquina&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Al3xt0r</name></author><category term="CTF" /><summary>Comentario:
+Esta fue de las primeras maquinas que hice, inspirada en la serie “Mr.Robot”. Tiene una forma muy entretenida de resolver, comenzamos:</summary></entry></feed>
