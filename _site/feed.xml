@@ -1,4 +1,111 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-19T13:06:52-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>Mr.Robot CTF</title><link href="http://localhost:4000/CTF-Mr.Robot/" rel="alternate" type="text/html" title="Mr.Robot CTF" /><published>2023-06-15T00:00:00-05:00</published><updated>2023-06-15T00:00:00-05:00</updated><id>http://localhost:4000/CTF-Mr.Robot</id><content type="html" xml:base="http://localhost:4000/CTF-Mr.Robot/">&lt;h2 class=&quot;lead&quot; id=&quot;comentario&quot;&gt;Comentario:&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-20T10:42:38-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>Htb Injection</title><link href="http://localhost:4000/HTB-Injection/" rel="alternate" type="text/html" title="Htb Injection" /><published>2023-06-16T00:00:00-05:00</published><updated>2023-06-16T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Injection</id><content type="html" xml:base="http://localhost:4000/HTB-Injection/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Inject.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;en-esta-maquina-veremos&quot;&gt;En esta maquina veremos:&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Scan de puertos&lt;/li&gt;
+  &lt;li&gt;LFI - Local File Inclusion&lt;/li&gt;
+  &lt;li&gt;Explotando funciones CRON&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;primer-paso-port-scanning&quot;&gt;Primer paso: PORT SCANNING&lt;/h3&gt;
+
+&lt;p&gt;Vamos a usar la herramienta nmap, ya sabemos que hay muchas combinaciones, pero me gusta usar esta por la rapidez:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; 65535 &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &amp;lt;Ip de la Maquina&amp;gt; &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; &amp;lt;Nombre del archivo que contendra la informacion&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Aunque tambien podemos usar tambien:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &amp;lt;IP Maquina&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;A estos puertos le pasaremos un scan de &lt;strong&gt;reconocimiento&lt;/strong&gt;, pero esta vez del servicio y versiones que corren tras la pagina.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&amp;lt;Puertos&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Como sea, obtendemos lo siguiente:
+&lt;img src=&quot;/assets/img/HTB_Injection/Injection-PORTS.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos ver cosas interesantes:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;El puerto 22 (Perteneciente al SSH) esta abierto.&lt;/li&gt;
+  &lt;li&gt;No se emplea un puerto 80 o un 443 para mostrar la pagina, sino, un servicio web-proxy en el puerto &lt;strong&gt;8080&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Si vamos a esa puerto, podremos ver una interfaz de subida de archivos.
+&lt;img src=&quot;/assets/img/HTB_Injection/Injection-UI.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si es que subimos un archivo &lt;strong&gt;test&lt;/strong&gt;, por ejemplo, nos dejara buscar por un paramentro:&lt;/p&gt;
+
+&lt;div class=&quot;language-http highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;http://&amp;lt;IP&amp;gt;:8080/show_image?img=
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Entonces, vamos a interceptar la peticion con la herramienta &lt;strong&gt;BURPSUITE&lt;/strong&gt;, para hacer test a ese parametro.&lt;/p&gt;
+
+&lt;p&gt;En este caso usaremos un LFI clasico, “../../../etc/passwd”, esto para listar posibles ususarios dentro del sistema:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Injection-Burp1.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que existe un usuario &lt;strong&gt;frank&lt;/strong&gt; y otro usuario &lt;strong&gt;phil&lt;/strong&gt;, pero realmente lo que ahora queremos hallar es la version del framework que usa esta aplicacion, asi que con &lt;strong&gt;Burpsuite&lt;/strong&gt;, nos ponemos a listar los directorios, hasta toparnos con:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Injection-Burp2.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos cosas interesantes:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Un Spring Framework&lt;/li&gt;
+  &lt;li&gt;La version usada es muy antigua (2.6.5)
+Si buscamos nos toparemos con un CVE, el &lt;strong&gt;CVE-2022-22963&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;cve-2022-22963&quot;&gt;CVE-2022-22963&lt;/h3&gt;
+&lt;p&gt;Puedes usar la &lt;a href=&quot;https://github.com/J0ey17/CVE-2022-22963_Reverse-Shell-Exploit&quot;&gt;herramienta que yo use&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Pero si vamos a fondo, este &lt;strong&gt;CVE-2022-22963&lt;/strong&gt;, explicado de forma rapida… Emplea un fallo de implementacion, atacando una ruta en especifico &lt;strong&gt;“/functionRouter”&lt;/strong&gt;, dentro del servicio.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Le carga a la cabecera: ‘spring.cloud.function.routing-expression’, nuestro payload (En este caso una reverse shell), y la crea en el directorio temporal de la maquina.
+Y bueno el comando que le carga en cuestion es el siguiente:
+    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;,&lt;span class=&quot;s1&quot;&gt;' + ((str(base64.b64encode(command.encode('&lt;/span&gt;utf-8&lt;span class=&quot;s1&quot;&gt;')))).strip('&lt;/span&gt;b&lt;span class=&quot;s1&quot;&gt;')).strip(&quot;'&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;) + '}|{base64,-d}|{bash,-i}
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;Donde &lt;strong&gt;command&lt;/strong&gt; contiene nuestra reverse shell.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;continuando&quot;&gt;Continuando:&lt;/h3&gt;
+
+&lt;p&gt;Podemos ver que ha funcionado:
+&lt;img src=&quot;/assets/img/HTB_Injection/Injection-CVE.jpeg&quot; alt=&quot;&quot; /&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Injection-Burp3.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Por lo que ahora queda ponernos en escucha con la herramienta &lt;strong&gt;netcat&lt;/strong&gt; o si queremos ahorrarnos tratar la tty, con &lt;strong&gt;pwncat-cs&lt;/strong&gt;.
+&lt;img src=&quot;/assets/img/HTB_Injection/Injection-RS.jpeg&quot; alt=&quot;&quot; /&gt;
+Si vamos investigando dentro del directorio principal del usuario &lt;strong&gt;frank&lt;/strong&gt;, vamos a toparnos con un directorio “.m2/” que contendra un archivo interesante: “settings.xml”, este contendra la password del usuario &lt;strong&gt;phil&lt;/strong&gt; (Que de igual forma podremos listar con &lt;strong&gt;burpsuite&lt;/strong&gt;):
+&lt;img src=&quot;/assets/img/HTB_Injection/InjectionRS2.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como ya tenemos usuario y password de &lt;strong&gt;phil&lt;/strong&gt;, simplemente ingresamos a su cuenta y solo nos quedaria usar una herramienta de reconocimiento para ver lo que sucede detras del sistema:&lt;/p&gt;
+
+&lt;p&gt;Podemos usar perfectamente:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps &lt;span class=&quot;nt&quot;&gt;-aux&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;O por otro lado, servirnos de la herramienta &lt;a href=&quot;https://github.com/DominicBreuker/pspy&quot;&gt;&lt;strong&gt;pspy64&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Injection-PSPY.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Y nos vamos a topar con algo interesante, hay un proceso que parece ejecutar una tarea cron, que apunta a un directorio que contiene formatos .yml&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Injection-CRON.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Asi que si vamos a es ruta, vamos a poder ver que tenemos permisos de escritura, por lo que le introducimos nuestra escalada de privilegios de la siguiente forma:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;hosts&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;localhost&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;tasks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Privilege Escalation&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;chmod u+s /bin/bash&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;become&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Como podemos ver, esto apunta contra el propio localhost de la maquina, y ejecuta el comando a nivel de sistema que le da permiso de ser ejecutado por el user+superuser al binario “/bin/bash”.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/InjectionYML.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Acto seguido tenemos 2 opciones, esperar a la tarea &lt;strong&gt;CRON&lt;/strong&gt;, o forzarla, si la queremos forzar, solo copiamos el comando, pero ejecutamos nuesto binario:
+&lt;img src=&quot;/assets/img/HTB_Injection/Injection-100.jpeg&quot; alt=&quot;&quot; /&gt;
+Como podemos ver, una vez que se ejecuta el permiso del binario cambia a &lt;strong&gt;“-rwsr-sr-x”&lt;/strong&gt;, por lo que para escalar privilegios solo nos queda ejecutar un:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h2 id=&quot;fin&quot;&gt;FIN&lt;/h2&gt;</content><author><name>Al3xt0r</name></author><category term="CTF" /><category term="HTB" /><category term="Writeup" /><category term="LFI" /><summary></summary></entry><entry><title>Mr.Robot CTF</title><link href="http://localhost:4000/CTF-Mr.Robot/" rel="alternate" type="text/html" title="Mr.Robot CTF" /><published>2023-06-15T00:00:00-05:00</published><updated>2023-06-15T00:00:00-05:00</updated><id>http://localhost:4000/CTF-Mr.Robot</id><content type="html" xml:base="http://localhost:4000/CTF-Mr.Robot/">&lt;h2 class=&quot;lead&quot; id=&quot;comentario&quot;&gt;Comentario:&lt;/h2&gt;
 &lt;p&gt;Esta fue de las primeras maquinas que hice, inspirada en la serie &lt;strong&gt;“Mr.Robot”&lt;/strong&gt;. Tiene una forma muy entretenida de resolver, comenzamos:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr.Robot1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
