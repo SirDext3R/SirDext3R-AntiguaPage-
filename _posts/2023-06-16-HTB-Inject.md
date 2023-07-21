@@ -21,7 +21,7 @@ Vamos a usar la herramienta nmap, ya sabemos que hay muchas combinaciones, pero 
 ```bash
 sudo nmap -sS -p- 65535 --open --min-rate 5000 -vvv -n -Pn <Ip de la Maquina> -oG <Nombre del archivo que contendra la informacion>
 ```
-Aunque tambien podemos usar tambien:
+Aunque tambien podemos usar:
 ```bash
 sudo nmap -T5 <IP Maquina>
 ```

