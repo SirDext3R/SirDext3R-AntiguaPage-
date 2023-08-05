@@ -1,6 +1,6 @@
 ---
 layout: post
-tittle: HTB TwoMillion
+title: HTB - TwoMillion
 author: al3xt0r
 date: 2023-07-23
 tags: [CTF, HackTheBox, WriteUp, RCE]

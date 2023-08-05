@@ -1,6 +1,6 @@
 ---
 layout: post
-tittle: HTB Inject Writeup
+title: HTB - Inject
 author: Al3xt0r
 date: 2023-06-16
 tags: [CTF, HTB, Writeup, LFI]
