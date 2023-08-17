@@ -3,11 +3,8 @@ layout: home
 ---
 # About Me
 
-Hi, my name is Al3xt0r, no se por que me presento en ingles, el caso... Juego CTFs, soy estudiante de **Ingenieria de Sistemas**, y ya no hay nada mas que pueda agregar.
-
-Bueno si, cree esta pagina, no por compartir mis conocimientos, solo que traia ganas desde hace tiempo, pero como no podia por temas de la universidad, lo hago ahora (A lo mejor ya ni la vuelvo a tocar).
-
-#### NOTA
+Hi, my name is **Al3xt0r**, no se por que me presento en ingles, el caso... Juego CTFs, soy estudiante de **Ingenieria de Sistemas**, me gusta la ciberseguridad.
+#### Posdata:
 Hay muchas fallas ortograficas, porque tengo el teclado en ingles, no te jode?
 
 - [Etiquetas a la berga](/tags)

