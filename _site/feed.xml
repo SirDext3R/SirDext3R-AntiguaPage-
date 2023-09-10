@@ -1,4 +1,127 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-08-17T12:50:21-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>HTB - Forest</title><link href="http://localhost:4000/HTB-Forest/" rel="alternate" type="text/html" title="HTB - Forest" /><published>2023-08-13T00:00:00-05:00</published><updated>2023-08-13T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Forest</id><content type="html" xml:base="http://localhost:4000/HTB-Forest/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F0.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.6.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-09-09T20:01:13-05:00</updated><id>http://localhost:4000/</id><title>Al3xt0r</title><subtitle>Tengo problemas de adiccion.</subtitle><entry><title>JABITA - HackMyVM</title><link href="http://localhost:4000/HackMyVM-Jabita/" rel="alternate" type="text/html" title="JABITA - HackMyVM" /><published>2023-09-09T00:00:00-05:00</published><updated>2023-09-09T00:00:00-05:00</updated><id>http://localhost:4000/HackMyVM-Jabita</id><content type="html" xml:base="http://localhost:4000/HackMyVM-Jabita/">&lt;p style=&quot;text-align: center;&quot; class=&quot;lead&quot;&gt; JABITA - HackMyVM&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/logo.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;fase-de-reconocimiento&quot;&gt;Fase de Reconocimiento:&lt;/h2&gt;
+
+&lt;p&gt;Bueno, esta maquina viene de &lt;a href=&quot;https://hackmyvm.eu/&quot;&gt;HackMyVM&lt;/a&gt;, por lo que tendremos que emularla e introducirla dentro de nuesta red local.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Para ver los dispositivos en nuestro segmento de red, podremos usar multiples utilidades que vienen por defecto en nuestro sistema.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;En este caso usare &lt;strong&gt;arp-scan&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;arp-scan &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;Nota rapida, no olvidemos ejecutar este comando como sudo.&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Una vez descubierta la direccion IP, procederemos al &lt;strong&gt;analisis de los puertos abiertos&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;No olvidar que para descubrir el sistema operativo mucho antes de usar herramientas como &lt;strong&gt;nmap&lt;/strong&gt;, es basarnos en el TTL obtenido al lanzar un &lt;strong&gt;ping&lt;/strong&gt;; el &lt;strong&gt;TTL comunmente de Linux&lt;/strong&gt; es &amp;lt;= 64&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos ver, tenemos el puerto 80 y el 22 abiertos:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;El &lt;strong&gt;Puerto 80&lt;/strong&gt;: Usado para el servicio HTTP.&lt;/li&gt;
+  &lt;li&gt;El &lt;strong&gt;Puerto 22&lt;/strong&gt;: Usado para el servicio SSH.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Acto seguido, vamos a ver que se encuentra tas el servicio HTTP:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos apreciar que se trata de una web en “construccion”, pero no venimos a ver eso, venimos a &lt;strong&gt;&lt;del&gt;hackear&lt;/del&gt;&lt;/strong&gt; divertirnos, por lo que aplicaremos un &lt;strong&gt;directory fuzzing.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos apreciar, hemos descubierto un directorio: &lt;strong&gt;building&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Si vamos a este directorio podemos ver algo interesante al momento de pasar el raton sobre cualquier widget presente en la barra superior:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos ver un posible &lt;strong&gt;LFI&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Por lo que apuntaremos a rutas que nos filtren informacion necesaria:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos apreciar, vemos que efectivamente existe un &lt;strong&gt;LFI&lt;/strong&gt;, entonces apuntaremos a rutas claves del sistema:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Algunas rutas claves son:&lt;/strong&gt; /etc/shadow, /etc/hosts, /etc/passwd… Esto debido a que en el la ruta &lt;strong&gt;/etc&lt;/strong&gt; de los sistemas &lt;strong&gt;Linux&lt;/strong&gt; es dond podremos encontrar mayoria de configuraciones, tanto del sistema, como dealgunas herramientas presentes.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J8.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como podemos observar, al momento de listar el /etc/shadow, podemos encontrar las passwords de los usuarios, solo que encodeadas, por lo que tendremos que romperlas.&lt;/p&gt;
+
+&lt;p&gt;Usando la herramienta John the Ripper, y valiendonos del diccionario &lt;strong&gt;“rockyou”&lt;/strong&gt; obtendremos la password del usuario jack:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Por lo que ahora nos quedaria entrar por SSH.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ahora nos queda listar binarios o permisos que nos permitan escalar nuestros privilegios para llegar al super user.&lt;/p&gt;
+
+&lt;p&gt;Si buscamos permisos a nivel de sudoers, podemos toparnos con que podemos usar el comando &lt;strong&gt;‘awk’&lt;/strong&gt; como el ususario &lt;strong&gt;jaba&lt;/strong&gt;, por lo que pivotaremos a su shell de la siguiente forma:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; jaba /usr/bin/awk &lt;span class=&quot;s1&quot;&gt;'BEGIN {system(&quot;/bin/sh&quot;)}'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si buscamos permisos para este usuario, nos encontraremos con que podemos correr un comando en &lt;strong&gt;Python&lt;/strong&gt;, asi que vamos por partes:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Vemos que tenemos permisos de ejecucion para un binario en lenguaje &lt;strong&gt;Python&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;El binario llama a una funcion: “wild.py”&lt;/li&gt;
+  &lt;li&gt;Procederemos a buscar la funcion y vemos que es un permiso: &lt;strong&gt;646&lt;/strong&gt;, esto es interesante, puesto que nos va a permitir escribir sobre el perteneciendo al grupo de &lt;strong&gt;OTHERS&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Yo en este caso, dare permisos de ejecucion al binario de &lt;strong&gt;bash&lt;/strong&gt;, tu puedes invocar una shell si deseas:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;chmod u+s /bin/bash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;entendiendo-la-vulnerabilidad&quot;&gt;Entendiendo la vulnerabilidad&lt;/h2&gt;
+
+&lt;p&gt;Como vimos, aprovechamos una vulnerabilidad interesante, dentro de esta maquina, al igual que en otros &lt;strong&gt;posts&lt;/strong&gt; hemos tocado, esta vulnerabilidad nos permite listar ficheros interesantes del servidor:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/HackMyVM_JABITA/J15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;La vulnerabilidad yace en el codigo &lt;strong&gt;php&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'page'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Eso es porque al no estar sanitizado, ya sea con una regex o similares, la funcion buscara el archivo en concreto, ya sea dentro de su directorio, o de otros… Y, por ende, es posible esta vulnerabilidad.&lt;/p&gt;
+
+&lt;h1 id=&quot;fin&quot;&gt;FIN&lt;/h1&gt;</content><author><name>Mr.N4sty</name></author><category term="CTF" /><category term="HackMyVM" /><category term="LFI" /><category term="Password Cracking" /><summary>JABITA - HackMyVM</summary></entry><entry><title>HTB - Forest</title><link href="http://localhost:4000/HTB-Forest/" rel="alternate" type="text/html" title="HTB - Forest" /><published>2023-08-13T00:00:00-05:00</published><updated>2023-08-13T00:00:00-05:00</updated><id>http://localhost:4000/HTB-Forest</id><content type="html" xml:base="http://localhost:4000/HTB-Forest/">&lt;p&gt;&lt;img src=&quot;/assets/img/HTB_Forest/F0.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Esta maquina es de las primeras que nos sugiere la plataforma &lt;strong&gt;Hack The Box&lt;/strong&gt;, para practicar &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Active Directory&lt;/code&gt;&lt;/strong&gt;, es una maquina de dificultad &lt;strong&gt;Easy&lt;/strong&gt;, pero aun asi… Tiene mucho que ofrecer.&lt;/p&gt;
 
